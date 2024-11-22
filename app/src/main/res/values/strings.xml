@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CursorReminder</string>
+    
+    <!-- Home Screen -->
+    <string name="title_todays_medications">Today\'s Medications</string>
+    <string name="action_add_reminder">Add Reminder</string>
+    <string name="content_description_add">Add new reminder</string>
+    
+    <!-- Add Reminder Screen -->
+    <string name="title_add_reminder">Add Reminder</string>
+    <string name="label_medication_name">Medication Name</string>
+    <string name="content_description_back">Navigate back</string>
+    <string name="content_description_notifications">Notifications</string>
+    <string name="action_select_time">Select Time</string>
+    
+    <!-- Reminder Item -->
+    <string name="content_description_dismiss_alarm">Dismiss alarm</string>
+    <string name="content_description_mark_taken">Mark as taken</string>
+    <string name="content_description_toggle_reminder">Toggle reminder</string>
+    
+    <!-- Permission Dialog -->
+    <string name="dialog_permission_title">Permission Required</string>
+    <string name="dialog_permission_message">Notification permission is required to send medication reminders. Please grant the permission to continue.</string>
+    <string name="action_grant_permission">Grant Permission</string>
+    <string name="action_later">Later</string>
+    
+    <!-- Notifications -->
+    <string name="notification_title">Time for medication!</string>
+    <string name="notification_message">It\'s time to take your %1$s</string>
+    <string name="action_dismiss">Dismiss</string>
+    
+    <!-- Delete Dialog -->
+    <string name="dialog_delete_title">Delete Reminder</string>
+    <string name="dialog_delete_message">Are you sure you want to delete this reminder?</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="content_description_delete">Delete reminder</string>
+    
+    <!-- Alarm Screen -->
+    <string name="alarm_time_for_medication">Time for Medication!</string>
+    <string name="action_mark_taken">Mark as Taken</string>
+    <string name="subtitle_add_reminder">Set up a new medication reminder with time and name</string>
+    <string name="label_reminder_time">Reminder Time</string>
+    <string name="label_schedule_options">Schedule Options</string>
+    <string name="action_daily">Daily</string>
+    <string name="action_custom">Custom</string>
+    <string name="title_select_days">Select Days</string>
+    <string name="action_done">Done</string>
+    <string name="schedule_info_daily">Reminder will repeat every day</string>
+    <string name="schedule_info_select_days">Select days for the reminder</string>
+    <string name="taken">Taken</string>
+</resources>
