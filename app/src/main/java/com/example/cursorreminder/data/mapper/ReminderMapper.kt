@@ -8,6 +8,7 @@ fun ReminderEntity.toReminder(): Reminder {
     return Reminder(
         id = id,
         medicationName = medicationName,
+        dosage = dosage,
         time = time,
         scheduledDays = scheduledDays.takeIf { it.isNotEmpty() }
             ?.split(",")
@@ -28,6 +29,7 @@ fun Reminder.toEntity(): ReminderEntity {
     return ReminderEntity(
         id = id,
         medicationName = medicationName,
+        dosage = dosage,
         time = time,
         scheduledDays = scheduledDays.joinToString(","){it.value.toString()},
         isEnabled = isEnabled,

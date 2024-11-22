@@ -76,10 +76,20 @@ fun AlarmScreen(
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(vertical = 8.dp)
         )
+        // Medication dosage
+        if (reminder.dosage.isNotBlank()) {
+            Text(
+                text = reminder.dosage,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         // Time
         Text(
-            text = reminder.time.format(DateTimeFormatter.ofPattern("HH:mm")),
+            text = reminder.time.format(DateTimeFormatter.ofPattern("hh:mm a")),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

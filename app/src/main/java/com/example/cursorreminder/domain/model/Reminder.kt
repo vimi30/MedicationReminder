@@ -7,8 +7,9 @@ import java.time.LocalDateTime
 data class Reminder(
     val id: Long = System.currentTimeMillis(),
     val medicationName: String,
+    val dosage: String = "",
     val time: LocalDateTime,
     val scheduledDays: List<DayOfWeek> = DayOfWeek.entries.toList(),
     val isEnabled: Boolean = true,
-    val completedDates: Set<LocalDate> = emptySet()
+    val completedDates: Set<LocalDate> = emptySet(),
 ) 

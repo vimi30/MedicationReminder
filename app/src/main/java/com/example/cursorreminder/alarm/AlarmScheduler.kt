@@ -23,6 +23,7 @@ class AlarmScheduler(private val context: Context) {
             action = AlarmReceiver.ACTION_ALARM_STARTED
             putExtra(AlarmReceiver.EXTRA_REMINDER_ID, reminder.id)
             putExtra(AlarmReceiver.EXTRA_MEDICATION_NAME, reminder.medicationName)
+            putExtra(AlarmReceiver.EXTRA_MEDICATION_DOSAGE, reminder.dosage)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(

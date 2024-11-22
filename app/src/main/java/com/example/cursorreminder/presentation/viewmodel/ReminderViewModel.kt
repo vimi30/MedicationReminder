@@ -53,6 +53,9 @@ class ReminderViewModel @Inject constructor(
     private val _selectedDays = MutableStateFlow(emptySet<DayOfWeek>())
     val selectedDays = _selectedDays.asStateFlow()
 
+    private val _dosage = MutableStateFlow("")
+    val dosage: StateFlow<String> = _dosage.asStateFlow()
+
     val reminders: StateFlow<List<Reminder>> = getRemindersUseCase()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
@@ -68,6 +71,10 @@ class ReminderViewModel @Inject constructor(
 
     private fun checkNotificationPermission() {
         _hasNotificationPermission.value = notificationPermissionHandler.hasNotificationPermission()
+    }
+
+    fun updateDosage(dosage: String) {
+        _dosage.value = dosage
     }
 
     fun updateScheduleType(type: ScheduleType) {
@@ -97,6 +104,7 @@ class ReminderViewModel @Inject constructor(
         viewModelScope.launch {
             val reminder = Reminder(
                 medicationName = medicationName.value,
+                dosage = dosage.value,
                 time = selectedTime.value,
                 scheduledDays = selectedDays.value.toList(),
                 isEnabled = true

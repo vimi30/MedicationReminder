@@ -23,12 +23,14 @@ class AlarmActivity : ComponentActivity() {
         
         val reminderId = intent.getLongExtra(AlarmReceiver.EXTRA_REMINDER_ID, -1)
         val medicationName = intent.getStringExtra(AlarmReceiver.EXTRA_MEDICATION_NAME) ?: ""
+        val medicationDosage = intent.getStringExtra(AlarmReceiver.EXTRA_MEDICATION_DOSAGE) ?: ""
 
         // Create a temporary reminder object for the alarm screen
         val reminder = com.example.cursorreminder.domain.model.Reminder(
             id = reminderId,
             medicationName = medicationName,
-            time = java.time.LocalDateTime.now()
+            dosage = medicationDosage,
+            time = java.time.LocalDateTime.now(),
         )
 
         setContent {

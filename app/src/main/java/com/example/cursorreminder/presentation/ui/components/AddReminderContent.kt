@@ -64,6 +64,7 @@ fun AddReminderContent(
     val scheduleType by viewModel.scheduleType.collectAsStateWithLifecycle()
     val selectedDays by viewModel.selectedDays.collectAsStateWithLifecycle()
     var showCustomScheduleDialog by remember { mutableStateOf(false) }
+    val dosage by viewModel.dosage.collectAsStateWithLifecycle()
 
     val timePickerDialog = remember {
         TimePickerDialog(
@@ -76,6 +77,11 @@ fun AddReminderContent(
             selectedTime.minute,
             true
         )
+    }
+
+    //check if form is valid
+    val isFormValid = remember(medicationName, selectedDays, dosage) {
+        medicationName.isNotBlank() && selectedDays.isNotEmpty() && dosage.isNotEmpty()
     }
 
     Column(
@@ -123,6 +129,31 @@ fun AddReminderContent(
             )
         )
 
+        // Dosage Input
+        OutlinedTextField(
+            value = dosage,
+            onValueChange = { viewModel.updateDosage(it) },
+            label = { Text(stringResource(R.string.label_dosage)) },
+            supportingText = { Text(stringResource(R.string.helper_dosage_format)) },
+            placeholder = { Text(stringResource(R.string.placeholder_dosage)) },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.icon_medication),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        )
+
         // Time Selection
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -148,7 +179,7 @@ fun AddReminderContent(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = selectedTime.format(DateTimeFormatter.ofPattern("HH:mm")),
+                    text = selectedTime.format(DateTimeFormatter.ofPattern("hh:mm a")),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -257,8 +288,11 @@ fun AddReminderContent(
                                 stringResource(R.string.schedule_info_select_days)
                             } else {
                                 selectedDays.sortedBy { it.value }
-                                    .joinToString(", ") {
-                                        it.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+                                    .joinToString(", ") { dayOfWeek ->
+                                        dayOfWeek.getDisplayName(
+                                            TextStyle.SHORT,
+                                            Locale.getDefault()
+                                        )
                                     }
                             }
                         },
@@ -266,21 +300,6 @@ fun AddReminderContent(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-            }
-
-            // Show selected days if custom schedule
-            if (scheduleType == ScheduleType.CUSTOM && selectedDays.isNotEmpty()) {
-                Text(
-                    text = selectedDays.joinToString(", ") {
-                        it.getDisplayName(
-                            TextStyle.SHORT,
-                            Locale.getDefault()
-                        )
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
             }
         }
 
@@ -348,7 +367,7 @@ fun AddReminderContent(
             },
             modifier = Modifier
                 .fillMaxWidth(),
-            enabled = medicationName.isNotBlank(),
+            enabled = isFormValid,
             shape = MaterialTheme.shapes.medium,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,

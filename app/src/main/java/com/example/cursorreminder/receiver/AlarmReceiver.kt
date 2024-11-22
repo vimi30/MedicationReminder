@@ -25,6 +25,7 @@ class AlarmReceiver : BroadcastReceiver() {
         const val ACTION_ALARM_DISMISSED = "com.example.cursorreminder.ALARM_DISMISSED"
         const val EXTRA_REMINDER_ID = "reminder_id"
         const val EXTRA_MEDICATION_NAME = "medication_name"
+        const val EXTRA_MEDICATION_DOSAGE = "medication_dosage"
 
         // Make MediaPlayer static
         @Volatile
@@ -61,6 +62,7 @@ class AlarmReceiver : BroadcastReceiver() {
             else -> {
                 val reminderId = intent?.getLongExtra(EXTRA_REMINDER_ID, -1L) ?: -1L
                 val medicationName = intent?.getStringExtra(EXTRA_MEDICATION_NAME) ?: "Medication"
+                val dosage = intent?.getStringExtra(EXTRA_MEDICATION_DOSAGE) ?: ""
 
 
                 // Create and start MediaPlayer
@@ -70,12 +72,11 @@ class AlarmReceiver : BroadcastReceiver() {
                     start()
                 }
 
-
                 // Set alarm as active
                 activeAlarmsRepository.setAlarmActive(reminderId)
 
                 // Create notification
-                val notification = createNotification(context, medicationName, reminderId)
+                val notification = createNotification(context, medicationName, dosage, reminderId)
                 notificationManager.notify(reminderId.toInt(), notification)
 
                 if (!isAppInForeground(context = context)) {
@@ -94,14 +95,22 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun createNotification(
         context: Context,
         medicationName: String,
+        dosage: String,
         reminderId: Long,
     ): Notification {
         val channelId = createNotificationChannel(context)
+
+        val contentText = if (dosage.isNotBlank()) {
+            context.getString(R.string.notification_with_dosage, medicationName, dosage)
+        } else {
+            "Time to take $medicationName"
+        }
 
         val intent = Intent(context, AlarmActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra(EXTRA_REMINDER_ID, reminderId)
             putExtra(EXTRA_MEDICATION_NAME, medicationName)
+            putExtra(EXTRA_MEDICATION_DOSAGE, dosage)
         }
 
         val pendingIntent = PendingIntent.getActivity(
@@ -113,7 +122,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         return NotificationCompat.Builder(context, channelId)
             .setContentTitle("Medication Reminder")
-            .setContentText("Time to take $medicationName")
+            .setContentText(contentText)
             .setSmallIcon(R.drawable.icon_medication)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_ALARM)

@@ -50,4 +50,8 @@
     <string name="schedule_info_daily">Reminder will repeat every day</string>
     <string name="schedule_info_select_days">Select days for the reminder</string>
     <string name="taken">Taken</string>
+    <string name="label_dosage">Dosage</string>
+    <string name="helper_dosage_format">Format: amount + unit (e.g., 2 pills, 5ml)</string>
+    <string name="placeholder_dosage">e.g., 1 pill</string>
+    <string name="notification_with_dosage">Time to take %1$s (%2$s)</string>
 </resources>

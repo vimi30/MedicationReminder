@@ -113,7 +113,6 @@ fun HomeScreen(
                     ) {
                         TodayReminderItem(
                             reminder = reminder,
-                            onToggleCompletion = { viewModel.toggleCompletion(reminder) },
                             viewModel = viewModel
                         )
                     }

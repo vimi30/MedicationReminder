@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 data class ReminderEntity(
     @PrimaryKey val id: Long,
     val medicationName: String,
+    val dosage: String,
     val time: LocalDateTime,
     val scheduledDays: String,
     val isEnabled: Boolean,
