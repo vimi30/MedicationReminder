@@ -336,9 +336,6 @@ fun AddReminderContent(
                 shape = MaterialTheme.shapes.large
             )
         }
-
-        Spacer(modifier = Modifier.weight(1f))
-
         // Add Button
         Button(
             onClick = {

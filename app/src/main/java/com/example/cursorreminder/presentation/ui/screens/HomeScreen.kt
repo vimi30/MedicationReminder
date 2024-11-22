@@ -29,11 +29,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cursorreminder.R
-import com.example.cursorreminder.presentation.viewmodel.ReminderViewModel
 import com.example.cursorreminder.presentation.ui.components.AddReminderContent
 import com.example.cursorreminder.presentation.ui.components.SwipeToDeleteContainer
 import com.example.cursorreminder.presentation.ui.components.TodayReminderItem
 import com.example.cursorreminder.presentation.ui.components.WeekCalendar
+import com.example.cursorreminder.presentation.viewmodel.ReminderViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +45,9 @@ fun HomeScreen(
     val reminders by viewModel.reminders.collectAsStateWithLifecycle()
     val completedDates by viewModel.completedDates.collectAsStateWithLifecycle()
     val activeAlarms by viewModel.activeAlarms.collectAsStateWithLifecycle()
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
     var showBottomSheet by remember { mutableStateOf(false) }
 
     // Find the active reminder and show alarm dialog
