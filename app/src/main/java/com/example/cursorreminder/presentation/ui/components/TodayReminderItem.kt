@@ -32,13 +32,14 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun TodayReminderItem(
+    modifier: Modifier = Modifier,
     reminder: Reminder,
     viewModel: ReminderViewModel,
 ) {
     val isCompletedToday = reminder.completedDates.contains(LocalDate.now())
 
     ElevatedCard(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.elevatedCardColors(
             containerColor = if (isCompletedToday) completedColor
             else MaterialTheme.colorScheme.surface

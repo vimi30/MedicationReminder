@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.cursorreminder.presentation.viewmodel.ReminderViewModel
+import com.example.cursorreminder.domain.model.Reminder
 import com.example.cursorreminder.presentation.ui.screens.AlarmScreen
 import com.example.cursorreminder.presentation.ui.theme.CursorReminderTheme
+import com.example.cursorreminder.presentation.viewmodel.ReminderViewModel
 import com.example.cursorreminder.receiver.AlarmReceiver
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class AlarmActivity : ComponentActivity() {
@@ -26,11 +28,11 @@ class AlarmActivity : ComponentActivity() {
         val medicationDosage = intent.getStringExtra(AlarmReceiver.EXTRA_MEDICATION_DOSAGE) ?: ""
 
         // Create a temporary reminder object for the alarm screen
-        val reminder = com.example.cursorreminder.domain.model.Reminder(
+        val reminder = Reminder(
             id = reminderId,
             medicationName = medicationName,
             dosage = medicationDosage,
-            time = java.time.LocalDateTime.now(),
+            time = LocalDateTime.now(),
         )
 
         setContent {

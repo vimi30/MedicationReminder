@@ -283,7 +283,10 @@ fun AddReminderContent(
 
                     Text(
                         text = when (scheduleType) {
-                            ScheduleType.DAILY -> stringResource(R.string.schedule_info_daily)
+                            ScheduleType.DAILY -> if (selectedDays.isEmpty()) "" else stringResource(
+                                R.string.schedule_info_daily
+                            )
+
                             ScheduleType.CUSTOM -> if (selectedDays.isEmpty()) {
                                 stringResource(R.string.schedule_info_select_days)
                             } else {

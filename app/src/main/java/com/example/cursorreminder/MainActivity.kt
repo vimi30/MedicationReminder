@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cursorreminder.presentation.ui.components.ReminderNavigation
 import com.example.cursorreminder.presentation.ui.screens.HomeScreen
 import com.example.cursorreminder.presentation.ui.theme.CursorReminderTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,14 +36,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen(
-                        viewModel = hiltViewModel(),
-                        onRequestPermission = {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                            }
-                        }
-                    )
+                    ReminderNavigation(viewModel = hiltViewModel())
                 }
             }
         }

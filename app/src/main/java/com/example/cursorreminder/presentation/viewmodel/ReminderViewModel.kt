@@ -57,11 +57,30 @@ class ReminderViewModel @Inject constructor(
     val dosage: StateFlow<String> = _dosage.asStateFlow()
 
     val reminders: StateFlow<List<Reminder>> = getRemindersUseCase()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyList()
+        )
+
+    val todayReminders: StateFlow<List<Reminder>> = reminders.map { reminderList ->
+        val today = LocalDate.now().dayOfWeek
+        reminderList.filter { reminder ->
+            reminder.scheduledDays.contains(today)
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        emptyList()
+    )
 
     val completedDates: StateFlow<Set<LocalDate>> = reminders.map { reminderList ->
         reminderList.flatMap { it.completedDates }.toSet()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptySet())
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        emptySet()
+    )
 
     val activeAlarms = activeAlarmsRepository.activeAlarms
 
@@ -101,6 +120,11 @@ class ReminderViewModel @Inject constructor(
     }
 
     fun addReminder() {
+        val medName = _medicationName.value.trim()
+        if (medName.isEmpty()) {
+            return
+        }
+
         viewModelScope.launch {
             val reminder = Reminder(
                 medicationName = medicationName.value,
@@ -120,12 +144,14 @@ class ReminderViewModel @Inject constructor(
 
             // Reset form
             _medicationName.value = ""
+            _dosage.value = ""
             _selectedDays.value = emptySet()
             _scheduleType.value = ScheduleType.DAILY
+            _selectedTime.value = LocalDateTime.now()
         }
     }
 
-    private fun getNextOccurrence(time: LocalDateTime, dayOfWeek: DayOfWeek): LocalDateTime {
+    fun getNextOccurrence(time: LocalDateTime, dayOfWeek: DayOfWeek): LocalDateTime {
         var nextTime = time
         while (nextTime.dayOfWeek != dayOfWeek) {
             nextTime = nextTime.plusDays(1)
@@ -158,6 +184,9 @@ class ReminderViewModel @Inject constructor(
 
             // Update active alarms
             activeAlarmsRepository.setAlarmInactive(reminder.id)
+
+            // Reschedule the alarm for the next occurrence
+            alarmScheduler.rescheduleAfterAlarm(reminder)
         }
     }
 

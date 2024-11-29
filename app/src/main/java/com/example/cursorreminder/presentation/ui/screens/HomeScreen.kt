@@ -45,6 +45,7 @@ fun HomeScreen(
     val reminders by viewModel.reminders.collectAsStateWithLifecycle()
     val completedDates by viewModel.completedDates.collectAsStateWithLifecycle()
     val activeAlarms by viewModel.activeAlarms.collectAsStateWithLifecycle()
+    val todayReminders by viewModel.todayReminders.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -104,7 +105,7 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(
-                    items = reminders,
+                    items = todayReminders,
                     key = { it.id }
                 ) { reminder ->
                     SwipeToDeleteContainer(
